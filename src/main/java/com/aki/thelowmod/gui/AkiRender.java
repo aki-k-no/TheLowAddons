@@ -45,7 +45,7 @@ public class AkiRender extends GuiIngameForge {
             CTRender.showCT(this, sclRes);
             if(ModCoreData.wasInTheLow) {
                 CTRender.showUtilityTimer(this, sclRes);
-                this.renderAkiGUI();
+                //this.renderAkiGUI();
             }
 
 
@@ -54,16 +54,16 @@ public class AkiRender extends GuiIngameForge {
         }
     }
 
-    private void renderAkiGUI(){
-        this.renderNoThrowOverlay();
-    }
+//    private void renderAkiGUI(){
+//        this.renderNoThrowOverlay();
+//    }
 
-    private void renderNoThrowOverlay(){
-        if(this.mc.currentScreen instanceof GuiContainer){
-            GuiContainer gui=(GuiContainer)this.mc.currentScreen;
-            gui.
-        }
-    }
+//    private void renderNoThrowOverlay(){
+//        if(this.mc.currentScreen instanceof GuiContainer){
+//            GuiContainer gui=(GuiContainer)this.mc.currentScreen;
+//            gui.
+//        }
+//    }
 
     private void renderHoldingItem(){
         int line=2;
