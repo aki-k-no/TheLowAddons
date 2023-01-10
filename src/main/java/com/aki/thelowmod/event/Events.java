@@ -139,7 +139,7 @@ public class Events {
             }if(HoldingItem.holdingItems.getDisplayName()==null){
                 return;
             }
-            if(HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt§r§c")){
+            if(HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt")){
                 ModCoreData.lastAmeretat=LocalDateTime.now();
             }
         }
