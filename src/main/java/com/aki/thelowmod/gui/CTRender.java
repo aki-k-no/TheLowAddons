@@ -64,7 +64,7 @@ public class CTRender {
         if(HoldingItem.holdingItems==null){
             return "";
         }
-        if(! HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt§r§c")){
+        if(! HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt")){
             return "";
         }
         if(diff[0]>=6){

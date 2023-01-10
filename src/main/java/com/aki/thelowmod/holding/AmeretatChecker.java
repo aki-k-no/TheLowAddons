@@ -19,7 +19,7 @@ public class AmeretatChecker {
                 wasHoldingAmeretat = false;
                 return;
             }
-            if (nowHolding.getDisplayName().startsWith("§4§lAmərətāt§r§c")) {
+            if (nowHolding.getDisplayName().startsWith("§4§lAmərətāt")) {
                 if (!wasHoldingAmeretat) {
                     ModCoreData.lastAmeretat = LocalDateTime.now();
                 }
