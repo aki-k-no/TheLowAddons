@@ -1,6 +1,7 @@
 package com.aki.thelowmod.gui;
 
 import com.aki.thelowmod.ClientProxy;
+import com.aki.thelowmod.api.AKITheLowUtil;
 import com.aki.thelowmod.config.DataStorage;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.holding.HoldingItem;
@@ -11,10 +12,13 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.xml.crypto.Data;
 import java.util.List;
@@ -45,25 +49,21 @@ public class AkiRender extends GuiIngameForge {
             CTRender.showCT(this, sclRes);
             if(ModCoreData.wasInTheLow) {
                 CTRender.showUtilityTimer(this, sclRes);
-                //this.renderAkiGUI();
             }
-
 
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-//    private void renderAkiGUI(){
-//        this.renderNoThrowOverlay();
-//    }
+    @SubscribeEvent
+    public void renderGUI(GuiScreenEvent.DrawScreenEvent.Pre e){
 
-//    private void renderNoThrowOverlay(){
-//        if(this.mc.currentScreen instanceof GuiContainer){
-//            GuiContainer gui=(GuiContainer)this.mc.currentScreen;
-//            gui.
-//        }
-//    }
+        if(DataStorage.showNoThrow){
+            OverlayRender.renderOverlay(this,sclRes);
+        }
+
+    }
 
     private void renderHoldingItem(){
         int line=2;

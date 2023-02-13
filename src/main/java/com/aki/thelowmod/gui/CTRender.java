@@ -6,6 +6,8 @@ import com.aki.thelowmod.config.DataStorage;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.holding.HoldingItem;
 import com.aki.thelowmod.types.SkillCoolTime;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.GuiIngameForge;
@@ -34,8 +36,8 @@ public class CTRender {
         int i=0;
         for(String key:keys){
             GlStateManager.pushMatrix();
-            GlStateManager.scale(1f,1f,1f);
-            gif.getFontRenderer().drawString(key+" "+timer(key), sclRes.getScaledWidth()*DataStorage.renderCTX, sclRes.getScaledHeight()*(DataStorage.renderCTY+determineY(key)*0.03f), 16777215, true);
+            GlStateManager.scale(DataStorage.renderCTSize,DataStorage.renderCTSize,DataStorage.renderCTSize);
+            gif.getFontRenderer().drawString(key+" "+timer(key), sclRes.getScaledWidth()*DataStorage.renderCTX/DataStorage.renderCTSize, sclRes.getScaledHeight()*(DataStorage.renderCTY+determineY(key)*0.03f)/DataStorage.renderCTSize, 16777215, true);
             GlStateManager.popMatrix();
             i++;
         }
@@ -61,6 +63,12 @@ public class CTRender {
     }
     public static String amereTimer(){
         Long[] diff=AKITheLowUtil.calcPreciseTimeDifference( LocalDateTime.now(),ModCoreData.lastAmeretat);
+        if(!DataStorage.showAmereTimer){
+            if(diff[1]<=25L && diff[0]==6 && DataStorage.playAmereSound){
+                Minecraft.getMinecraft().thePlayer.playSound("akithelowmod:amere",1f,1.00f);
+            }
+            return "";
+        }
         if(HoldingItem.holdingItems==null){
             return "";
         }
@@ -68,7 +76,10 @@ public class CTRender {
             return "";
         }
         if(diff[0]>=6){
-            return "アムル使用可能";
+            if(diff[1]<=25L && diff[0]==6 && DataStorage.playAmereSound){
+                Minecraft.getMinecraft().thePlayer.playSound("akithelowmod:amere",1f,1.00f);
+            }
+            return "アムル§2使用可能";
         }else{
             return "アムル: 0:0"+(6-diff[0]);
         }
@@ -81,6 +92,12 @@ public class CTRender {
 
         GlStateManager.pushMatrix();
         GlStateManager.scale(DataStorage.utilityCTSize,DataStorage.utilityCTSize,DataStorage.utilityCTSize);
+        if(HoldingItem.holdingItems!=null && HoldingItem.holdingItems.getDisplayName()!=null && HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") && DataStorage.showAmereTimer){
+            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.152f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+        }else{
+            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.048f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.152f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+        }
+
         gif.getFontRenderer().drawString(amereTimer(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize, 16777215, true);
 
         showYK(gif,sclRes);
@@ -92,15 +109,16 @@ public class CTRender {
         GlStateManager.disableAlpha();
     }
     public static void showYK(GuiIngameForge gif, ScaledResolution sclRes){
+
         if(ModCoreData.isAlreadyYochou){
-            gif.getFontRenderer().drawString("予兆済", sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.04f)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("予兆§2済", sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
         }else{
-            gif.getFontRenderer().drawString("予兆未", sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.04f)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("予兆§4未", sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
         }
         if(ModCoreData.isAlreadyKaihou){
-            gif.getFontRenderer().drawString("開放済", sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.08f)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("開放§2済", sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.1f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
         }else{
-            gif.getFontRenderer().drawString("開放未", sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.08f)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("開放§4未", sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.1f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
         }
 
     }

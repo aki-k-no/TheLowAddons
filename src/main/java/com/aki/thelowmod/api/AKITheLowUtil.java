@@ -1,7 +1,12 @@
 package com.aki.thelowmod.api;
 
+import com.aki.thelowmod.config.DataStorage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S3BPacketScoreboardObjective;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
@@ -13,6 +18,7 @@ import org.apache.logging.log4j.core.jmx.Server;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
+import java.util.List;
 
 public class AKITheLowUtil {
 
@@ -119,4 +125,25 @@ public class AKITheLowUtil {
             return "§8[-] ";
         }
     }
+
+    //GUIの幅高さを推測
+    public static Integer[] getGuiWidthHeight(GuiContainer gui){
+        int max_y=0;
+        int max_x=0;
+        List<Slot> slots=gui.inventorySlots.inventorySlots;
+        for(Slot slot : slots){
+            max_x=Math.max(max_x,slot.xDisplayPosition);
+            max_y=Math.max(max_y,slot.yDisplayPosition);
+
+        }
+
+        Integer[] data=new Integer[2];
+        data[0]=((max_x+25)/2)*2;
+        if(Minecraft.getMinecraft().thePlayer.getActivePotionEffects().size()!=0 && gui instanceof GuiInventory && DataStorage.calculatePotionEffectGUI){
+            data[0]=data[0]-120;
+        }
+        data[1]=((max_y+25)/2)*2;
+        return data;
+    }
+
 }

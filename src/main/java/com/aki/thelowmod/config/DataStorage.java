@@ -8,6 +8,8 @@ public class DataStorage {
 
     public static float renderCTX=0.9f;
     public static float renderCTY=0.9f;
+
+    public static float renderCTSize=1f;
     public static boolean isCTVisible=true;
 
     public static float renderDistance=0.0175f;
@@ -24,5 +26,13 @@ public class DataStorage {
     public static float utilityCTX=0.2f;
     public static float utilityCTY=0.2f;
     public static float utilityCTSize=0.5f;
+
+    public static boolean showNoThrow=true;
+
+    public static boolean calculatePotionEffectGUI=true;
+
+    public static boolean playAmereSound=true;
+
+    public static boolean showAmereTimer=true;
 
 }

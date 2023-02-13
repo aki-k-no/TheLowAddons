@@ -1,0 +1,10 @@
+{
+  "amere": {
+    "category" : "player",
+    "sounds": [{
+      "name": "akithelowmod:amere",
+      "stream": false
+    }
+    ]
+  }
+}

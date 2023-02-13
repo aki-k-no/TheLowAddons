@@ -34,9 +34,9 @@ public class TheLowLogin {
 
     public static void loginUpdater(){
         boolean isInTheLow=AKITheLowUtil.isInTheLow();
-        if(!ModCoreData.wasInTheLow && isInTheLow){
+        if(!ModCoreData.hasBeenInTheLow[0] && isInTheLow){
             ModCoreData.loggedTime= LocalDateTime.now();
-        }else if(!isInTheLow){
+        }else if(!isInTheLow && !ModCoreData.hasBeenInTheLow[0]){
             ModCoreData.isDungeonDataLoaded=false;
             ModCoreData.isPlayerDataLoaded=false;
             ModCoreData.isAPISubscribed=false;
@@ -47,7 +47,11 @@ public class TheLowLogin {
             }
             ModCoreData.dungeonData=null;
         }
-        ModCoreData.wasInTheLow=isInTheLow;
+        for(int i=0;i<9;i++){
+            ModCoreData.hasBeenInTheLow[i]=ModCoreData.hasBeenInTheLow[i+1];
+        }
+        ModCoreData.hasBeenInTheLow[9]=isInTheLow;
+        ModCoreData.wasInTheLow=ModCoreData.hasBeenInTheLow[0];
 
 
     }

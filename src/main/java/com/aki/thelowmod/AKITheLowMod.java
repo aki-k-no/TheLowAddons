@@ -4,6 +4,7 @@ package com.aki.thelowmod;
 //import com.aki.thelowmod.commands.CommandGetItem;
 import com.aki.thelowmod.commands.GetCurrentItemDataCommand;
 import com.aki.thelowmod.config.AKITheLowModConfigCore;
+import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.gui.AkiRender;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,6 +57,7 @@ public class AKITheLowMod
     public void postInit(FMLPostInitializationEvent event)
     {
         proxy.postInit(event);
+
         MinecraftForge.EVENT_BUS.register(new Events());
         MinecraftForge.EVENT_BUS.register(new AkiRender(Minecraft.getMinecraft()));
         System.out.println("postInit Done");

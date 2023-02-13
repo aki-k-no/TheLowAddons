@@ -67,6 +67,7 @@ public class AKITheLowModConfigCore {
         DataStorage.shouldDeleteAPIOutput = cfg.getBoolean("shouldDeleteAPIOutput", CORE, DataStorage.shouldDeleteAPIOutput, "TheLowAPIの出力を消すかどうか決められます 他modを同時に使う場合はこれをFalseにしてください(他mod側が対応してない場合アリ)", "config.akithelow.core.shouldDeleteAPIOutput");
         DataStorage.renderCTX=cfg.getFloat("CTRenderX",CT, DataStorage.renderCTX,0f,10f,"CTの表示場所X座標を決定します","config.akithelow.ct.renderX");
         DataStorage.renderCTY=cfg.getFloat("CTRenderY",CT, DataStorage.renderCTY,0f,10f,"CTの表示場所Y座標を決定します","config.akithelow.ct.renderY");
+        DataStorage.renderCTSize=cfg.getFloat("CTRenderSize",CT, DataStorage.renderCTSize,0f,10f,"CTの表示サイズを決定します","config.akithelow.ct.renderSize");
         DataStorage.isCTVisible=cfg.getBoolean("isCTVisible",CT, DataStorage.isCTVisible,"CTの表示するかを決定します","config.akithelow.ct.isCTVisible");
         DataStorage.alertArmorDamage=cfg.getFloat("ArmorAlertPercent",ARMOR, DataStorage.alertArmorDamage,0f,10f,"防具耐久値のアラートの境界値を設定します","config.akithelow.armor.alertArmorDamage");
         DataStorage.alertArmorDamageX=cfg.getFloat("ArmorAlertX",ARMOR, DataStorage.alertArmorDamageX,0f,10f,"防具耐久値のアラートの表示座標X","config.akithelow.armor.alertArmorX");
@@ -75,6 +76,10 @@ public class AKITheLowModConfigCore {
         DataStorage.utilityCTX=cfg.getFloat("UtilityCTX",UTIL,DataStorage.utilityCTX,0f,10f,"アムルタイマーなどの表示座標X","config.akithelow.util.utilityX");
         DataStorage.utilityCTY=cfg.getFloat("UtilityCTY",UTIL,DataStorage.utilityCTY,0f,10f,"アムルタイマーなどの表示座標Y","config.akithelow.util.utilityY");
         DataStorage.utilityCTSize=cfg.getFloat("UtilityCTSize",UTIL,DataStorage.utilityCTSize,0f,10f,"アムルタイマーなどの表示サイズ","config.akithelow.util.utilitySize");
+        DataStorage.showNoThrow=cfg.getBoolean("ToggleNoThrow",UTIL,DataStorage.showNoThrow,"NoThrowアイコン表示非表示切り替え","config.akithelow.util.toggleNothrow");
+        DataStorage.calculatePotionEffectGUI=cfg.getBoolean("shouldCalculatePotionEffectGUI",UTIL,DataStorage.calculatePotionEffectGUI,"ポーションエフェクトが掛かってるときにGUIの位置が変わらないようにするModを入れてる人はここをoffにしてください","config.akithelow.util.shouldCalculatePotionEffectGUI");
+        DataStorage.playAmereSound=cfg.getBoolean("ToggleAmereSound",UTIL,DataStorage.playAmereSound,"アムルタイマーの音のオンオフ","config.akithelow.util.toggleAmereSound");
+        DataStorage.showAmereTimer=cfg.getBoolean("ShowAmereTimer",UTIL,DataStorage.showAmereTimer,"アムルタイマー表示オンオフ(これ以外にUtilityTimerを表示する設定をONにしてください)","config.akithelow.util.showAmereTimer");
 
 
         // 設定内容をコンフィグファイルに保存する。

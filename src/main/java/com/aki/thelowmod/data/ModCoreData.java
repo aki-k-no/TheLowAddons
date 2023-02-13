@@ -13,6 +13,8 @@ public class ModCoreData {
 
     public static boolean wasInTheLow=false;
 
+    public static boolean[] hasBeenInTheLow=new boolean[10];
+
     public static boolean isDungeonDataLoaded=false;
 
     public static boolean isPlayerDataLoaded=false;

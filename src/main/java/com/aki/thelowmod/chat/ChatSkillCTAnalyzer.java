@@ -26,6 +26,8 @@ public class ChatSkillCTAnalyzer {
             ModCoreData.isAlreadyKaihou=true;
         }else if(sc.name.equals("覚醒")){
             ModCoreData.isAlreadyKaihou=false;
+        }else if(sc.name.equals("ステッドショック") && sc.cooltime>60){
+            sc.cooltime=60.0;
         }
     }
 
