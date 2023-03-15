@@ -129,6 +129,17 @@ public class Events {
                 e.setCanceled(true);
             }
         }
+        if(e.message.getUnformattedText().contains("手に持っているアイテムを捨てられるアイテムとして設定しました。")){
+            e.setCanceled(true);
+            AKITheLowUtil.showInChat("手に持っているアイテムは現在§c捨てられます");
+        }else if(e.message.getUnformattedText().contains("手に持っているアイテムを捨てられないアイテムとして設定しました。")){
+            e.setCanceled(true);
+            AKITheLowUtil.showInChat("手に持っているアイテムは現在§a捨てられません");
+        }
+    }
+
+    private static void NoThrowOK(){
+
     }
 
     @SubscribeEvent

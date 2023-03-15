@@ -16,6 +16,5 @@ public class KeyBinds {
 
     public static void sendNoThrow(){
         Minecraft.getMinecraft().thePlayer.sendChatMessage("/nothrow");
-        AKITheLowUtil.showInChat("手持ちアイテムのnothrowを切り替えました。");
     }
 }

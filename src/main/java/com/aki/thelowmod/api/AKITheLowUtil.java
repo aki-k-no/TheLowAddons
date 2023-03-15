@@ -243,6 +243,7 @@ public class AKITheLowUtil {
         showInChat("§7タブに転生数を表示");
         showInChat("§7防具の耐久アラート");
         showInChat("§7NoThrowマーカー、NoThrowショートカット(デフォルトはNキー)");
+        showInChat("§1このModはTheLow公式modやTheLowToopTipModと競合します。同時に使うと一部の機能が使えない可能性があります");
         showInChat("§b=================================================");
         ModCoreData.isFirstLogin=false;
     }
