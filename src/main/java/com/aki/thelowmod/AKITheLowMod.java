@@ -2,10 +2,15 @@ package com.aki.thelowmod;
 
 //import com.aki.thelowmod.commands.CommandGetArmor;
 //import com.aki.thelowmod.commands.CommandGetItem;
+import com.aki.thelowmod.commands.CreateCITPropertiesCommand;
+import com.aki.thelowmod.commands.DungeonPresetCommand;
 import com.aki.thelowmod.commands.GetCurrentItemDataCommand;
 import com.aki.thelowmod.config.AKITheLowModConfigCore;
 import com.aki.thelowmod.data.ModCoreData;
+import com.aki.thelowmod.dungeonpreset.DungeonPresets;
 import com.aki.thelowmod.gui.AkiRender;
+import com.aki.thelowmod.keybinds.KeyBinds;
+import com.aki.thelowmod.keybinds.KeyPressHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
@@ -46,6 +51,9 @@ public class AKITheLowMod
     {
         proxy.init(event);
         ClientCommandHandler.instance.registerCommand(new GetCurrentItemDataCommand());
+        ClientCommandHandler.instance.registerCommand(new CreateCITPropertiesCommand());
+        ClientCommandHandler.instance.registerCommand(new DungeonPresetCommand());
+        DungeonPresets.init();
 
 
 
@@ -60,6 +68,8 @@ public class AKITheLowMod
 
         MinecraftForge.EVENT_BUS.register(new Events());
         MinecraftForge.EVENT_BUS.register(new AkiRender(Minecraft.getMinecraft()));
+        MinecraftForge.EVENT_BUS.register(new KeyPressHandler());
+        KeyBinds.init();
         System.out.println("postInit Done");
     }
 

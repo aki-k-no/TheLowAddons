@@ -42,4 +42,6 @@ public class ModCoreData {
     public static LocalDateTime lastAmeretat=LocalDateTime.now();
     public static boolean isAlreadyKaihou=false;
     public static boolean isAlreadyYochou=false;
+
+    public static boolean isFirstLogin=true;
 }

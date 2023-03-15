@@ -62,8 +62,11 @@ public class HoldingItem {
                 if(Lore.getStringTagAt(i).equals("")){
                     flag=false;
                 }else{
+                    try {
+                        map.put(Lore.getStringTagAt(i).split(" ： §6+")[0], Double.parseDouble(Lore.getStringTagAt(i).split(" ： §6+")[1].trim()));
+                    }catch(Exception e){
 
-                    map.put(Lore.getStringTagAt(i).split(" ： §6+")[0],Double.parseDouble(Lore.getStringTagAt(i).split(" ： §6+")[1].trim()));
+                    }
                 }
             }
         }
@@ -71,6 +74,7 @@ public class HoldingItem {
     }
 
     public static void analyzeItemLore(){
+        Lore=null;
         if(holdingItems==null) return;
         if(holdingItems.getTagCompound()==null) return;
         if(!holdingItems.getTagCompound().hasKey("display")) return;

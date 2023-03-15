@@ -1,6 +1,5 @@
 package com.aki.thelowmod.gui;
 
-import com.aki.thelowmod.AKITheLowMod;
 import com.aki.thelowmod.api.AKITheLowUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -14,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.GuiIngameForge;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class OverlayRender {
@@ -34,9 +34,18 @@ public class OverlayRender {
             List<Slot> slots=c.inventorySlots;
             Minecraft.getMinecraft().getTextureManager().bindTexture(NOTHROW);
 
-            Integer[] GUIData=AKITheLowUtil.getGuiWidthHeight(gui);
-            int leftX=(gui.width-GUIData[0])/2;
-            int topY=(gui.height-GUIData[1])/2;
+
+            int leftX=0;
+            int topY=0;
+            Class<? extends GuiContainer> guiclazz=gui.getClass();
+            try {
+                Field fleftX=AKITheLowUtil.getFieldFromClass(guiclazz,"field_147003_i");
+                Field ftopY=AKITheLowUtil.getFieldFromClass(guiclazz,"field_147009_r");
+                fleftX.setAccessible(true);
+                ftopY.setAccessible(true);
+                leftX=fleftX.getInt(gui);
+                topY=ftopY.getInt(gui);
+            } catch (Exception e) {}
 
             for(int i=0;i<slots.size();i++){
                 ItemStack item=slots.get(i).getStack();
@@ -45,8 +54,10 @@ public class OverlayRender {
                 if(item.getTagCompound()==null) continue;
 
                 if(item.getTagCompound().hasKey("no_throw_item")){
-                    if(item.getTagCompound().getString("no_throw_item").equals("01"))
-                    drawNoThrowIcon(gif,sclRes,slots.get(i),gui,leftX,topY);
+                    if(item.getTagCompound().getString("no_throw_item").equals("01")){
+                        drawNoThrowIcon(gif,sclRes,slots.get(i),gui,leftX,topY);
+                    }
+
                 }
             }
         }

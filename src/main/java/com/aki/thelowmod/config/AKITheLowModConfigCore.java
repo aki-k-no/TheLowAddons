@@ -77,7 +77,6 @@ public class AKITheLowModConfigCore {
         DataStorage.utilityCTY=cfg.getFloat("UtilityCTY",UTIL,DataStorage.utilityCTY,0f,10f,"アムルタイマーなどの表示座標Y","config.akithelow.util.utilityY");
         DataStorage.utilityCTSize=cfg.getFloat("UtilityCTSize",UTIL,DataStorage.utilityCTSize,0f,10f,"アムルタイマーなどの表示サイズ","config.akithelow.util.utilitySize");
         DataStorage.showNoThrow=cfg.getBoolean("ToggleNoThrow",UTIL,DataStorage.showNoThrow,"NoThrowアイコン表示非表示切り替え","config.akithelow.util.toggleNothrow");
-        DataStorage.calculatePotionEffectGUI=cfg.getBoolean("shouldCalculatePotionEffectGUI",UTIL,DataStorage.calculatePotionEffectGUI,"ポーションエフェクトが掛かってるときにGUIの位置が変わらないようにするModを入れてる人はここをoffにしてください","config.akithelow.util.shouldCalculatePotionEffectGUI");
         DataStorage.playAmereSound=cfg.getBoolean("ToggleAmereSound",UTIL,DataStorage.playAmereSound,"アムルタイマーの音のオンオフ","config.akithelow.util.toggleAmereSound");
         DataStorage.showAmereTimer=cfg.getBoolean("ShowAmereTimer",UTIL,DataStorage.showAmereTimer,"アムルタイマー表示オンオフ(これ以外にUtilityTimerを表示する設定をONにしてください)","config.akithelow.util.showAmereTimer");
 

@@ -36,6 +36,7 @@ public class TheLowLogin {
         boolean isInTheLow=AKITheLowUtil.isInTheLow();
         if(!ModCoreData.hasBeenInTheLow[0] && isInTheLow){
             ModCoreData.loggedTime= LocalDateTime.now();
+            if(ModCoreData.isFirstLogin)AKITheLowUtil.description();
         }else if(!isInTheLow && !ModCoreData.hasBeenInTheLow[0]){
             ModCoreData.isDungeonDataLoaded=false;
             ModCoreData.isPlayerDataLoaded=false;
@@ -88,6 +89,9 @@ public class TheLowLogin {
             while(iterator.hasNext()) {
                 NetworkPlayerInfo ni=iterator.next();
                 String mcid="";
+                if(ni==null)return;
+                if(ni.getDisplayName()==null)return;
+                if(ni.getDisplayName().getUnformattedText()==null)return;
                 if(ni.getDisplayName().getUnformattedText().split(" ").length!=2) {
                     mcid=ni.getDisplayName().getUnformattedText();
                 }else{

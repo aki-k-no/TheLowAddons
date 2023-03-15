@@ -139,7 +139,7 @@ public class Events {
             }if(HoldingItem.holdingItems.getDisplayName()==null){
                 return;
             }
-            if(HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt")){
+            if(HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") && !(e.target instanceof EntityPlayer)){
                 ModCoreData.lastAmeretat=LocalDateTime.now();
             }
         }

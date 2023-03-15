@@ -1,6 +1,7 @@
 package com.aki.thelowmod.api;
 
 import com.aki.thelowmod.config.DataStorage;
+import com.aki.thelowmod.data.ModCoreData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -14,7 +15,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.core.jmx.Server;
+import org.lwjgl.Sys;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
@@ -146,4 +149,101 @@ public class AKITheLowUtil {
         return data;
     }
 
+    public static Field getFieldFromClass(Class clazz, String fieldName)
+            throws NoSuchFieldException {
+        Field field = null;
+        while (clazz != null) {
+            try {
+                Field[] fields=clazz.getDeclaredFields();
+                if(clazz.getSimpleName().equals("GuiContainer")){
+                    for(int i=0;i<fields.length;i++){
+                    }
+                }
+
+                field = clazz.getDeclaredField(fieldName);
+                break;
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            }
+        }
+
+        if (field == null) {
+            throw new NoSuchFieldException();
+        }
+        return field;
+    }
+
+    public static Field getFieldFromClassSP(Class clazz, String fieldName,Object obj)
+            throws NoSuchFieldException {
+        Field field = null;
+        while (clazz != null) {
+            try {
+                Field[] fields=clazz.getDeclaredFields();
+                if(clazz.getSimpleName().equals("GuiContainer")){
+                    for(int i=0;i<fields.length;i++){
+                        fields[i].setAccessible(true);
+                        if(true){
+                        }
+
+                    }
+                }
+
+                field = clazz.getDeclaredField(fieldName);
+                break;
+            } catch (NoSuchFieldException e) {
+                clazz = clazz.getSuperclass();
+            }
+        }
+
+        if (field == null) {
+            throw new NoSuchFieldException();
+        }
+        return field;
+    }
+
+    public static String getTheLowItemID(ItemStack item){
+        if(item==null) return null;
+        if(!item.hasTagCompound()) return null;
+        if(!item.getTagCompound().hasKey("thelow_item_id")) return null;
+        return item.getTagCompound().getString("thelow_item_id");
+
+    }
+
+    public static Long getTheLowSeedValue(ItemStack item){
+        if(item==null) return null;
+        if(!item.hasTagCompound()) return null;
+        if(!item.getTagCompound().hasKey("thelow_item_seed_value") && !item.getTagCompound().hasKey("thelow_item_id")) return null;
+        if(!item.getTagCompound().hasKey("thelow_item_seed_value")){
+            return Long.valueOf(item.getTagCompound().getString("thelow_item_id").hashCode());
+        }
+        return item.getTagCompound().getLong("thelow_item_seed_value");
+
+    }
+
+    // JavaのUnicode文字列の変換用メソッド("あ" <-> "\u3042") https://qiita.com/sifue/items/039846cf8415efdc5c92 参照
+    public static String convertToUnicode(String original){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < original.length(); i++) {
+            sb.append(String.format("\\u%04X", Character.codePointAt(original, i)));
+        }
+        String unicode = sb.toString();
+        return unicode;
+    }
+
+    public static void description(){
+        showInChat("§b=================================================");
+        showInChat("§b現在のバージョン: AKI's TheLow Addons v1.4");
+        showInChat("§a==使用可能コマンド==");
+        showInChat("§7/ghi 現在のアイテムの詳しい情報を取得");
+        showInChat("§7/cit 現在のアイテムに対応するCITテクスチャのpropertiesファイルの内容をコピー");
+        showInChat("§7/preset ダンジョンプリセット機能(ダンジョンごとに持っていくアイテムを保存していつでも確認可能)");
+        showInChat("§a==主機能==");
+        showInChat("§7CTタイマー、アムルタイマー、開放予兆マーカー");
+        showInChat("§7手に持ってる武器の情報表示機能");
+        showInChat("§7タブに転生数を表示");
+        showInChat("§7防具の耐久アラート");
+        showInChat("§7NoThrowマーカー、NoThrowショートカット(デフォルトはNキー)");
+        showInChat("§b=================================================");
+        ModCoreData.isFirstLogin=false;
+    }
 }
