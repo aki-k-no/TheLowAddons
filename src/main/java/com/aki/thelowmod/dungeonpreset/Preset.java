@@ -25,6 +25,22 @@ public class Preset  implements Serializable {
         this.items=new HashSet<ItemWithNameAndUUID>();
     }
 
+    public String getPresetName(){
+        return presetName;
+    }
+
+    public void setPresetName(String prisetName){
+        this.presetName=presetName;
+    }
+
+    public Set<ItemWithNameAndUUID> getItems(){
+        return this.items;
+    }
+
+    public void setItems(Set<ItemWithNameAndUUID> items){
+        this.items=items;
+    }
+
     public void addItem(ItemStack item){
         if(item==null || AKITheLowUtil.getTheLowSeedValue(item)==null){
             AKITheLowUtil.showInChat("§b【！】手にアイテムを持っていない、若しくは追加できませんでした");

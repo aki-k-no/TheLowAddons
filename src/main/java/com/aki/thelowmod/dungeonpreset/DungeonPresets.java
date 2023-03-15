@@ -13,6 +13,7 @@ public class DungeonPresets implements Serializable {
 
     public static Set<Preset> presets=null;
 
+
     public static void init(){
         loadPresetDat();
     }
@@ -26,7 +27,7 @@ public class DungeonPresets implements Serializable {
     }
 
     private static void loadPresetDat(){
-        PresetSerializer.deserializePresetData();
+        PresetSerializer.inputPresetData();
         if(presets==null){
             presets=new HashSet<Preset>();
         }

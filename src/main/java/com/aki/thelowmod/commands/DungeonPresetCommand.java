@@ -119,7 +119,7 @@ public class DungeonPresetCommand extends CommandBase implements ICommand {
             DungeonPresets.getPresetByName(args[1]).addHotBarItem();
             return;
         }
-        PresetSerializer.serializePresetData();
+        PresetSerializer.outputPresetData();
     }
 
 

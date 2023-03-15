@@ -21,6 +21,22 @@ public class ItemWithNameAndUUID implements Serializable,Cloneable {
         this.uuid=uuid;
     }
 
+    public String getItem_name(){
+        return this.item_name;
+    }
+
+    public void setItem_name(String item_name){
+        this.item_name=item_name;
+    }
+
+    public Long getUuid(){
+        return this.uuid;
+    }
+
+    public void setUuid(Long uuid){
+        this.uuid=uuid;
+    }
+
     @Override
     public ItemWithNameAndUUID clone(){
         return new ItemWithNameAndUUID(this.item_name,this.uuid);
