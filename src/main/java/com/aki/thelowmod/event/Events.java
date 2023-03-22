@@ -119,7 +119,7 @@ public class Events {
 
 
 
-    @SubscribeEvent
+    @SubscribeEvent(receiveCanceled = true)
     public void chatReceived(ClientChatReceivedEvent e){
         if(e.message.getUnformattedText().startsWith("$api")){
             if(e.message.getUnformattedText().split("api ").length != 2){
