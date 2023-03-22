@@ -19,5 +19,6 @@ public class ChatDungeonAnalyzer {
         Response<DungeonData[]> dungeonData=gson.fromJson(text, type);
         ModCoreData.dungeonData=dungeonData.response;
 
+
     }
 }

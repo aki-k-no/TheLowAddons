@@ -78,6 +78,7 @@ public class AKITheLowModConfigCore {
         DataStorage.utilityCTSize=cfg.getFloat("UtilityCTSize",UTIL,DataStorage.utilityCTSize,0f,10f,"アムルタイマーなどの表示サイズ","config.akithelow.util.utilitySize");
         DataStorage.showNoThrow=cfg.getBoolean("ToggleNoThrow",UTIL,DataStorage.showNoThrow,"NoThrowアイコン表示非表示切り替え","config.akithelow.util.toggleNothrow");
         DataStorage.playAmereSound=cfg.getBoolean("ToggleAmereSound",UTIL,DataStorage.playAmereSound,"アムルタイマーの音のオンオフ","config.akithelow.util.toggleAmereSound");
+        DataStorage.amereSoundVolume=cfg.getFloat("amereSoundVolume",UTIL,DataStorage.amereSoundVolume,0f,2f,"アムルタイマーの音量","config.akithelow.util.amereSoundVolume");
         DataStorage.showAmereTimer=cfg.getBoolean("ShowAmereTimer",UTIL,DataStorage.showAmereTimer,"アムルタイマー表示オンオフ(これ以外にUtilityTimerを表示する設定をONにしてください)","config.akithelow.util.showAmereTimer");
 
 

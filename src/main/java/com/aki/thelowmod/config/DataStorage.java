@@ -35,4 +35,6 @@ public class DataStorage {
 
     public static boolean showAmereTimer=true;
 
+    public static float amereSoundVolume=1f;
+
 }

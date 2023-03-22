@@ -12,7 +12,7 @@ public class ModInfo {
     public static void load(ModMetadata meta){
         meta.modId = AKITheLowMod.MODID;
         meta.name = AKITheLowMod.MODNAME;
-        meta.description ="TheLowのクライアント用のModです 他TheLow用のModと競合は多分しません";
+        meta.description ="TheLowのクライアント用のModです TheLow公式mod,TheLowToopTipModとは競合します";
         meta.version =AKITheLowMod.VERSION ;
         meta.authorList.add("AKI(K_no)");
         meta.credits = "";

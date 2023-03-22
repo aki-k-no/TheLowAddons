@@ -77,7 +77,7 @@ public class CTRender {
         }
         if(diff[0]>=6){
             if(diff[1]<=25L && diff[0]==6 && DataStorage.playAmereSound){
-                Minecraft.getMinecraft().thePlayer.playSound("akithelowmod:amere",1f,1.00f);
+                Minecraft.getMinecraft().thePlayer.playSound("akithelowmod:amere",DataStorage.amereSoundVolume,1.00f);
             }
             return "アムル§2使用可能";
         }else{

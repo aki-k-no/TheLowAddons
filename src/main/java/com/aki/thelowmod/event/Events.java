@@ -11,6 +11,7 @@ import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.holding.AmeretatChecker;
 import com.aki.thelowmod.holding.HoldingItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -23,6 +24,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -85,6 +87,11 @@ public class Events {
             }
         }
 
+//        if(nowHealth!=Minecraft.getMinecraft().thePlayer.getHealth()){
+//            AKITheLowUtil.showInChat(nowHealth-Minecraft.getMinecraft().thePlayer.getHealth());
+//        }
+//
+//        nowHealth=Minecraft.getMinecraft().thePlayer.getHealth();
 
 
     }
@@ -155,4 +162,7 @@ public class Events {
             }
         }
     }
+
+    public static float nowHealth=0;
+
 }

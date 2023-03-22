@@ -1,7 +1,9 @@
 package com.aki.thelowmod.api;
 
+import com.aki.thelowmod.AKITheLowMod;
 import com.aki.thelowmod.config.DataStorage;
 import com.aki.thelowmod.data.ModCoreData;
+import com.aki.thelowmod.types.DungeonData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -220,6 +222,33 @@ public class AKITheLowUtil {
 
     }
 
+    public static double getAdditionalHealth(ItemStack item){
+        if(item==null) return 0;
+        if(!item.hasTagCompound()) return 0;
+        if(!item.getTagCompound().hasKey("thelow_item_add_max_health")){
+            return 0;
+        }
+        return item.getTagCompound().getDouble("thelow_item_add_max_health");
+    }
+
+    public static double getMobArmor(ItemStack item){
+        if(item==null) return 0;
+        if(!item.hasTagCompound()) return 0;
+        if(!item.getTagCompound().hasKey("thelow_item_normal_armor_point")){
+            return 0;
+        }
+        return item.getTagCompound().getDouble("thelow_item_normal_armor_point");
+    }
+
+    public static double getBossArmor(ItemStack item){
+        if(item==null) return 0;
+        if(!item.hasTagCompound()) return 0;
+        if(!item.getTagCompound().hasKey("thelow_item_boss_armor_point")){
+            return 0;
+        }
+        return item.getTagCompound().getDouble("thelow_item_boss_armor_point");
+    }
+
     // JavaのUnicode文字列の変換用メソッド("あ" <-> "\u3042") https://qiita.com/sifue/items/039846cf8415efdc5c92 参照
     public static String convertToUnicode(String original){
         StringBuilder sb = new StringBuilder();
@@ -243,8 +272,21 @@ public class AKITheLowUtil {
         showInChat("§7タブに転生数を表示");
         showInChat("§7防具の耐久アラート");
         showInChat("§7NoThrowマーカー、NoThrowショートカット(デフォルトはNキー)");
-        showInChat("§1このModはTheLow公式modやTheLowToopTipModと競合します。同時に使うと一部の機能が使えない可能性があります");
+        showInChat("§cこのModはTheLow公式modやTheLowToopTipModと競合します。同時に使うと一部の機能が使えない可能性があります");
         showInChat("§b=================================================");
         ModCoreData.isFirstLogin=false;
+    }
+
+    public static DungeonData getSpecificDungeonData(String name){
+        if(ModCoreData.dungeonData==null){
+            return null;
+        }
+        for(int i=0;i<ModCoreData.dungeonData.length;i++){
+            if(ModCoreData.dungeonData[i].name.equals(name)){
+                return ModCoreData.dungeonData[i];
+            }
+        }
+        return null;
+
     }
 }

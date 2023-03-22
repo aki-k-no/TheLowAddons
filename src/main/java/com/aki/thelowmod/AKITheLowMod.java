@@ -2,9 +2,7 @@ package com.aki.thelowmod;
 
 //import com.aki.thelowmod.commands.CommandGetArmor;
 //import com.aki.thelowmod.commands.CommandGetItem;
-import com.aki.thelowmod.commands.CreateCITPropertiesCommand;
-import com.aki.thelowmod.commands.DungeonPresetCommand;
-import com.aki.thelowmod.commands.GetCurrentItemDataCommand;
+import com.aki.thelowmod.commands.*;
 import com.aki.thelowmod.config.AKITheLowModConfigCore;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.dungeonpreset.DungeonPresets;
@@ -28,7 +26,7 @@ public class AKITheLowMod
     public static final String MODID = "akithelowmod";
     public static final String MODNAME = "AKI's The Low Addons";
 
-    public static final String VERSION = "1.3.2";
+    public static final String VERSION = "1.4";
 
     public static Gson gson=new GsonBuilder().create();;
     @Metadata(MODID)
@@ -53,6 +51,8 @@ public class AKITheLowMod
         ClientCommandHandler.instance.registerCommand(new GetCurrentItemDataCommand());
         ClientCommandHandler.instance.registerCommand(new CreateCITPropertiesCommand());
         ClientCommandHandler.instance.registerCommand(new DungeonPresetCommand());
+        ClientCommandHandler.instance.registerCommand(new EHPCommand());
+        ClientCommandHandler.instance.registerCommand(new TellDungeonLocationCommand());
         DungeonPresets.init();
 
 
