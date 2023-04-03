@@ -5,6 +5,7 @@ import com.aki.thelowmod.api.AKITheLowUtil;
 import com.aki.thelowmod.config.DataStorage;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.holding.HoldingItem;
+import com.aki.thelowmod.timer.*;
 import com.aki.thelowmod.types.SkillCoolTime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -14,9 +15,22 @@ import net.minecraftforge.client.GuiIngameForge;
 
 import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class CTRender {
+
+    public static List<AbstractTimer> timers;
+
+    public static void init(){
+
+        timers=new ArrayList<AbstractTimer>();
+        timers.add(new DragonShineTimer());
+        timers.add(new TenkaTimer());
+        timers.add(new ImpactionTimer());
+        timers.add(new BSKTimer());
+    }
 
     public static void showCT(GuiIngameForge gif, ScaledResolution sclRes){
         GlStateManager.pushMatrix();
@@ -93,12 +107,26 @@ public class CTRender {
         GlStateManager.pushMatrix();
         GlStateManager.scale(DataStorage.utilityCTSize,DataStorage.utilityCTSize,DataStorage.utilityCTSize);
         if(HoldingItem.holdingItems!=null && HoldingItem.holdingItems.getDisplayName()!=null && HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") && DataStorage.showAmereTimer){
-            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.152f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
-        }else{
-            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.048f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.152f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
-        }
+            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
 
+        }else{
+            boolean flag=true;
+            for(AbstractTimer timer:timers){
+                if(timer.shouldBeShown()){
+                    flag=false;
+                    Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+                    gif.getFontRenderer().drawString(timer.getDisplayText(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize, 16777215, true);
+
+                }
+
+            }
+            if(flag){
+                Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.048f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+
+            }
+            }
         gif.getFontRenderer().drawString(amereTimer(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize, 16777215, true);
+
 
         showYK(gif,sclRes);
 

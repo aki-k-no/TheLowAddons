@@ -261,18 +261,19 @@ public class AKITheLowUtil {
 
     public static void description(){
         showInChat("§b=================================================");
-        showInChat("§b現在のバージョン: AKI's TheLow Addons v1.4");
+        showInChat("§b現在のバージョン: AKI's TheLow Addons v1.4.1");
         showInChat("§a==使用可能コマンド==");
         showInChat("§7/ghi 現在のアイテムの詳しい情報を取得");
         showInChat("§7/cit 現在のアイテムに対応するCITテクスチャのpropertiesファイルの内容をコピー");
         showInChat("§7/preset ダンジョンプリセット機能(ダンジョンごとに持っていくアイテムを保存していつでも確認可能)");
+        showInChat("§7/ehp 自分の有効体力を表示するコマンド");
+        showInChat("§7/armor 自分の防具の防具スコアを表示するコマンド");
         showInChat("§a==主機能==");
         showInChat("§7CTタイマー、アムルタイマー、開放予兆マーカー");
         showInChat("§7手に持ってる武器の情報表示機能");
         showInChat("§7タブに転生数を表示");
         showInChat("§7防具の耐久アラート");
         showInChat("§7NoThrowマーカー、NoThrowショートカット(デフォルトはNキー)");
-        showInChat("§cこのModはTheLow公式modやTheLowToopTipModと競合します。同時に使うと一部の機能が使えない可能性があります");
         showInChat("§b=================================================");
         ModCoreData.isFirstLogin=false;
     }

@@ -3,6 +3,8 @@ package com.aki.thelowmod.chat;
 import com.aki.thelowmod.AKITheLowMod;
 import com.aki.thelowmod.api.AKITheLowUtil;
 import com.aki.thelowmod.data.ModCoreData;
+import com.aki.thelowmod.gui.CTRender;
+import com.aki.thelowmod.timer.AbstractTimer;
 import com.aki.thelowmod.types.Response;
 import com.aki.thelowmod.types.SkillCoolTime;
 import com.google.common.reflect.TypeToken;
@@ -28,6 +30,9 @@ public class ChatSkillCTAnalyzer {
             ModCoreData.isAlreadyKaihou=false;
         }else if(sc.name.equals("ステッドショック") && sc.cooltime>60){
             sc.cooltime=60.0;
+        }
+        for(AbstractTimer timer: CTRender.timers){
+            timer.setTimer(sc.name);
         }
     }
 

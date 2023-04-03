@@ -4,9 +4,11 @@ package com.aki.thelowmod;
 //import com.aki.thelowmod.commands.CommandGetItem;
 import com.aki.thelowmod.commands.*;
 import com.aki.thelowmod.config.AKITheLowModConfigCore;
+import com.aki.thelowmod.config.DataStorage;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.dungeonpreset.DungeonPresets;
 import com.aki.thelowmod.gui.AkiRender;
+import com.aki.thelowmod.gui.CTRender;
 import com.aki.thelowmod.keybinds.KeyBinds;
 import com.aki.thelowmod.keybinds.KeyPressHandler;
 import com.google.gson.Gson;
@@ -52,10 +54,11 @@ public class AKITheLowMod
         ClientCommandHandler.instance.registerCommand(new CreateCITPropertiesCommand());
         ClientCommandHandler.instance.registerCommand(new DungeonPresetCommand());
         ClientCommandHandler.instance.registerCommand(new EHPCommand());
-        ClientCommandHandler.instance.registerCommand(new TellDungeonLocationCommand());
+        ClientCommandHandler.instance.registerCommand(new ArmorScoreCommand());
+        //ClientCommandHandler.instance.registerCommand(new TellDungeonLocationCommand());
         DungeonPresets.init();
 
-
+        CTRender.init();
 
         System.out.println("Init Done");
 

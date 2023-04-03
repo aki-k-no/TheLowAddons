@@ -44,4 +44,10 @@ public class ModCoreData {
     public static boolean isAlreadyYochou=false;
 
     public static boolean isFirstLogin=true;
+
+    //以下タイマー関連
+    public static LocalDateTime dragonEndTime=LocalDateTime.now();
+    public static LocalDateTime ImpactionEndTime=LocalDateTime.now();
+    public static LocalDateTime TenkaEndTime=LocalDateTime.now();
+    public static LocalDateTime BSKEndTime=LocalDateTime.now();
 }
