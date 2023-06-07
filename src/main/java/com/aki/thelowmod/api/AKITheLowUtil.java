@@ -311,6 +311,7 @@ public class AKITheLowUtil {
         showInChat("§7/ehp 自分の有効体力を表示するコマンド");
         showInChat("§7/armor 自分の防具の防具スコアを表示するコマンド");
         showInChat("§7/refresh タブやタイマーがバグったときに修正するコマンド");
+        showInChat("§7/specialtag タブの転生数タグを自由に書き換え可能(自分のみに表示)");
         showInChat("§a==主機能==");
         showInChat("§7CTタイマー、アムルタイマー、開放予兆マーカー");
         showInChat("§7手に持ってる武器の情報表示機能");
