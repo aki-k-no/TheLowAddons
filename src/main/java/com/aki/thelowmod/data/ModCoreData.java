@@ -1,5 +1,6 @@
 package com.aki.thelowmod.data;
 
+import com.aki.thelowmod.api.Coordinates;
 import com.aki.thelowmod.types.DungeonData;
 import com.aki.thelowmod.types.Player_Status;
 import com.aki.thelowmod.types.SkillCoolTime;
@@ -50,4 +51,15 @@ public class ModCoreData {
     public static LocalDateTime ImpactionEndTime=LocalDateTime.now();
     public static LocalDateTime TenkaEndTime=LocalDateTime.now();
     public static LocalDateTime BSKEndTime=LocalDateTime.now();
+    public static LocalDateTime SeikishinEndTime=LocalDateTime.now();
+
+    public static LocalDateTime RoAHandTime=LocalDateTime.now();
+
+    public static ConcurrentHashMap<String,LocalDateTime> springTimer=new ConcurrentHashMap<String,LocalDateTime>();
+
+    public static ConcurrentHashMap<String, Coordinates> springLocation=new ConcurrentHashMap<String,Coordinates>();
+
+    public static String specialTag=null;
+
 }
+

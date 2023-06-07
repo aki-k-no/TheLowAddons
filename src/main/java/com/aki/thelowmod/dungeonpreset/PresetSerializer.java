@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 import static com.aki.thelowmod.AKITheLowMod.gson;
 
+//現在jsonで管理しているため未使用
 public class PresetSerializer {
 
     public static String FILE_POS="dungeon_preset.dat";

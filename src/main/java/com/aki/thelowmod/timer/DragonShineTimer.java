@@ -16,13 +16,10 @@ public class DragonShineTimer extends AbstractTimer{
 
     @Override
     public boolean shouldBeShown() {
-        if(HoldingItem.holdingItems==null) return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)==null )return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("246mainH剣")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.dragonEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
+        if(AKITheLowUtil.calcTimeDifference(ModCoreData.dragonEndTime,LocalDateTime.now())>=0){
+            return true;
         }
+
         return false;
 
     }

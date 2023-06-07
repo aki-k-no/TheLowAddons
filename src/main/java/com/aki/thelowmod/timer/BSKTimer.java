@@ -16,18 +16,10 @@ public class BSKTimer extends AbstractTimer{
 
     @Override
     public boolean shouldBeShown() {
-        if(HoldingItem.holdingItems==null) return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)==null )return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("浮世の狂剣")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.BSKEndTime,LocalDateTime.now())>=0){
+        if(AKITheLowUtil.calcTimeDifference(ModCoreData.BSKEndTime,LocalDateTime.now())>0){
                 return true;
-            }
         }
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("浮世の冥剣")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.BSKEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
-        }
+
         return false;
 
     }

@@ -37,6 +37,15 @@ public class AkiRender extends GuiIngameForge {
     }
 
     @SubscribeEvent
+    public void renderWorldLast(RenderWorldLastEvent e){
+        try{
+            WorldRender.render(this,sclRes);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @SubscribeEvent
     public void render(RenderGameOverlayEvent.Text event){
         try {
 
@@ -54,6 +63,7 @@ public class AkiRender extends GuiIngameForge {
         }catch(Exception e){
             e.printStackTrace();
         }
+
     }
 
     @SubscribeEvent

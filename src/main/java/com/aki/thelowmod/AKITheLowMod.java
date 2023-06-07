@@ -11,6 +11,7 @@ import com.aki.thelowmod.gui.AkiRender;
 import com.aki.thelowmod.gui.CTRender;
 import com.aki.thelowmod.keybinds.KeyBinds;
 import com.aki.thelowmod.keybinds.KeyPressHandler;
+import com.aki.thelowmod.nametag.SpecialNameTag;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
@@ -28,7 +29,7 @@ public class AKITheLowMod
     public static final String MODID = "akithelowmod";
     public static final String MODNAME = "AKI's The Low Addons";
 
-    public static final String VERSION = "1.4";
+    public static final String VERSION = "1.4.2";
 
     public static Gson gson=new GsonBuilder().create();;
     @Metadata(MODID)
@@ -54,9 +55,16 @@ public class AKITheLowMod
         ClientCommandHandler.instance.registerCommand(new CreateCITPropertiesCommand());
         ClientCommandHandler.instance.registerCommand(new DungeonPresetCommand());
         ClientCommandHandler.instance.registerCommand(new EHPCommand());
+        //ClientCommandHandler.instance.registerCommand(new GetGUIItemNBTDataCommand());
         ClientCommandHandler.instance.registerCommand(new ArmorScoreCommand());
+        ClientCommandHandler.instance.registerCommand(new RefreshCommand());
+        //ClientCommandHandler.instance.registerCommand(new SpringPlaceCommand());
+        ClientCommandHandler.instance.registerCommand(new SpecialTagCommand());
+
+
         //ClientCommandHandler.instance.registerCommand(new TellDungeonLocationCommand());
         DungeonPresets.init();
+        SpecialNameTag.init();
 
         CTRender.init();
 

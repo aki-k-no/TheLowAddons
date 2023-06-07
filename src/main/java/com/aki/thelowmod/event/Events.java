@@ -3,29 +3,37 @@ package com.aki.thelowmod.event;
 import com.aki.thelowmod.AKITheLowMod;
 import com.aki.thelowmod.api.AKITheLowUtil;
 import com.aki.thelowmod.api.ArmorAlert;
+import com.aki.thelowmod.api.Coordinates;
 import com.aki.thelowmod.api.TheLowLogin;
 import com.aki.thelowmod.chat.ChatReceiver;
+import com.aki.thelowmod.commands.GetGUIItemNBTDataCommand;
 import com.aki.thelowmod.config.AKITheLowModConfigCore;
 import com.aki.thelowmod.config.DataStorage;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.holding.AmeretatChecker;
 import com.aki.thelowmod.holding.HoldingItem;
+import com.aki.thelowmod.holding.RoAChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.event.ClickEvent;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.lwjgl.input.Mouse;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -81,9 +90,21 @@ public class Events {
                 ex.printStackTrace();
             }
             try{
+                RoAChecker.checkRoA();
                 AmeretatChecker.checkAmere();
             }catch(Exception ex){
                 ex.printStackTrace();
+            }
+            //泉のタイマーをチェックする
+            LocalDateTime now=LocalDateTime.now();
+            for(String key:ModCoreData.springTimer.keySet()){
+                LocalDateTime limit=ModCoreData.springTimer.get(key);
+                if(AKITheLowUtil.calcTimeDifference(now,limit)>0){
+                    AKITheLowUtil.showInChat("§6[AKI TheLow Addons] §a"+key+"の泉のクールタイムが終了しました");
+                    ModCoreData.springTimer.remove(key);
+                }else if(AKITheLowUtil.calcTimeDifference(now,limit)>-31){
+                    ModCoreData.springLocation.remove(key);
+                }
             }
         }
 
@@ -142,7 +163,32 @@ public class Events {
         }else if(e.message.getUnformattedText().contains("手に持っているアイテムを捨てられないアイテムとして設定しました。")){
             e.setCanceled(true);
             AKITheLowUtil.showInChat("手に持っているアイテムは現在§a捨てられません");
+        }else if(AKITheLowUtil.checkRegix(e.message.getUnformattedText(),"\\[武器スキル\\].[0-9A-Za-z_]*が恵みの泉を発動")){
+            String mcid=e.message.getUnformattedText().split(" ")[1].split("が")[0];
+
+            try {
+                if (ModCoreData.springTimer.containsKey(mcid)) {
+                    ModCoreData.springTimer.remove(mcid);
+                }
+                if (ModCoreData.springLocation.containsKey(mcid)) {
+                    ModCoreData.springLocation.remove(mcid);
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            ModCoreData.springTimer.put(mcid,LocalDateTime.now().plusSeconds(51).plusNanos(300000000));
+            try {
+                EntityPlayer ep=AKITheLowUtil.getEntityPlayerByName(mcid);
+                if(ep!=null){
+                    ep.onUpdate();
+                    ModCoreData.springLocation.put(mcid,new Coordinates(ep.posX,ep.posY,ep.posZ));
+
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
         }
+
     }
 
     private static void NoThrowOK(){
@@ -165,4 +211,60 @@ public class Events {
 
     public static float nowHealth=0;
 
+    @SubscribeEvent
+    public void onGUIClicked(GuiScreenEvent.MouseInputEvent.Pre e){
+
+        if(!GetGUIItemNBTDataCommand.toggled){
+            return;
+        }
+        if(!Mouse.isButtonDown(0)){
+            return;
+        }
+        if(Minecraft.getMinecraft().currentScreen==null){
+            AKITheLowUtil.showInChat("現在GUIを開いていません");
+            return;
+        }
+        if(Minecraft.getMinecraft().currentScreen instanceof GuiContainer){
+            GuiContainer container=(GuiContainer) Minecraft.getMinecraft().currentScreen;
+            if(container!=null){
+                if(container.getSlotUnderMouse()!=null){
+                    ItemStack item=container.getSlotUnderMouse().getStack();
+                    if(item==null) {
+                        AKITheLowUtil.showInChat("ここのスロットにはアイテムが存在しません");
+                    }else{
+                        AKITheLowUtil.showInChat("該当スロットのアイテムのデータをクリップボードにコピーしました");
+
+                        AKITheLowUtil.copyToClipboard(item.getDisplayName()+" "+item.getTagCompound());
+                    }
+                }else{
+
+                    AKITheLowUtil.showInChat("ここにはスロットが存在しません");
+                }
+
+            }
+
+
+        }
+    }
+
+    @SubscribeEvent
+    public void ClickEvent(MouseEvent e){
+        if(e.button==1) return;
+        if(e.dx!=0 || e.dy!=0) return;
+        if(HoldingItem.holdingItems==null){
+            return;
+        }else if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)==null){
+            return;
+        }else if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("RaidLightReward2") || AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("mainH魔法LvEliteLight1")){
+            ModCoreData.RoAHandTime=LocalDateTime.now();
+        }
+    }
+
+
+
+    public static boolean isBoss(String mobName){
+        if(mobName==null)return false;
+        if(mobName.contains("【"))return true;
+        return false;
+    }
 }

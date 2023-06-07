@@ -87,31 +87,39 @@ public class TheLowLogin {
 
         if(iterator != null){
             while(iterator.hasNext()) {
-                NetworkPlayerInfo ni=iterator.next();
-                String mcid="";
-                if(ni==null)return;
-                if(ni.getDisplayName()==null)return;
-                if(ni.getDisplayName().getUnformattedText()==null)return;
-                if(ni.getDisplayName().getUnformattedText().split(" ").length!=2) {
-                    mcid=ni.getDisplayName().getUnformattedText();
-                }else{
-                    mcid=ni.getDisplayName().getUnformattedText().split(" ")[1];
+                NetworkPlayerInfo ni = iterator.next();
+                try {
+                    String mcid = "";
+                    if (ni == null) return;
+                    if (ni.getDisplayName() == null) return;
+                    if (ni.getDisplayName().getUnformattedText() == null) return;
+                    if (ni.getDisplayName().getUnformattedText().split(" ").length != 2) {
+                        mcid = ni.getDisplayName().getUnformattedText();
+                    } else {
+                        mcid = ni.getDisplayName().getUnformattedText().split(" ")[1];
 
-                }
-                int swords=-1;
-                int bows=0;
-                int magics=0;
-                if(ModCoreData.player_status.get(mcid) != null){
+                    }
+                    int swords = -1;
+                    int bows = 0;
+                    int magics = 0;
+                    if (ModCoreData.player_status.get(mcid) != null) {
 
-                    swords=ModCoreData.player_status.get(mcid).swordStatus.reincCount;
-                    bows=ModCoreData.player_status.get(mcid).bowStatus.reincCount;
-                    magics=ModCoreData.player_status.get(mcid).magicStatus.reincCount;
-                }
-                if(ni.getDisplayName().getUnformattedText().split(" ").length!=2){
-                    ni.setDisplayName(new ChatComponentText(AKITheLowUtil.addReincTag(swords+bows+magics)+ni.getDisplayName().getUnformattedText()));
-                }else{
-
-                    ni.setDisplayName(new ChatComponentText(AKITheLowUtil.addReincTag(swords+bows+magics)+ni.getDisplayName().getUnformattedText().split(" ")[1]));
+                        swords = ModCoreData.player_status.get(mcid).swordStatus.reincCount;
+                        bows = ModCoreData.player_status.get(mcid).bowStatus.reincCount;
+                        magics = ModCoreData.player_status.get(mcid).magicStatus.reincCount;
+                    }
+                    String displayName = "";
+                    if (ni.getDisplayName().getUnformattedText().split(" ").length != 2) {
+                        displayName = ni.getDisplayName().getUnformattedText();
+                    } else {
+                        displayName = ni.getDisplayName().getUnformattedText().split(" ")[1];
+                    }
+                    ni.setDisplayName(new ChatComponentText(AKITheLowUtil.addReincTag(swords + bows + magics) + displayName));
+                    if (AKITheLowUtil.isSpecialName(displayName)) {
+                        ni.setDisplayName(new ChatComponentText(AKITheLowUtil.addSpecialReincTag(displayName, swords + bows + magics) + displayName));
+                    }
+                }catch(Exception e){
+                    //人数が多いときに例外吐いてるのでは説に従って意味もなくcatchしてみる
                 }
             }
         }

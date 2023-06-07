@@ -16,27 +16,9 @@ public class TenkaTimer extends AbstractTimer{
 
     @Override
     public boolean shouldBeShown() {
-        if(HoldingItem.holdingItems==null) return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)==null )return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("浮世の聖剣反転")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.TenkaEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
-        }
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("浮世の聖剣")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.TenkaEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
-        }
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("レヴィテの剣")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.TenkaEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
-        }
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("浮世の砂海NORMALEND冥剣")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.TenkaEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
+
+        if(AKITheLowUtil.calcTimeDifference(ModCoreData.TenkaEndTime,LocalDateTime.now())>=0){
+            return true;
         }
         return false;
 

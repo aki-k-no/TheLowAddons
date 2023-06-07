@@ -30,6 +30,8 @@ public class CTRender {
         timers.add(new TenkaTimer());
         timers.add(new ImpactionTimer());
         timers.add(new BSKTimer());
+        timers.add(new RoATimer());
+        timers.add(new SeikishinTimer());
     }
 
     public static void showCT(GuiIngameForge gif, ScaledResolution sclRes){
@@ -107,24 +109,23 @@ public class CTRender {
         GlStateManager.pushMatrix();
         GlStateManager.scale(DataStorage.utilityCTSize,DataStorage.utilityCTSize,DataStorage.utilityCTSize);
         if(HoldingItem.holdingItems!=null && HoldingItem.holdingItems.getDisplayName()!=null && HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") && DataStorage.showAmereTimer){
-            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
 
-        }else{
-            boolean flag=true;
-            for(AbstractTimer timer:timers){
-                if(timer.shouldBeShown()){
-                    flag=false;
-                    Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
-                    gif.getFontRenderer().drawString(timer.getDisplayText(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize, 16777215, true);
-
-                }
+        }
+        boolean flag=true;
+        for(AbstractTimer timer:timers){
+            if(timer.shouldBeShown()){
+                flag=false;
+                Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.2f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+                gif.getFontRenderer().drawString(timer.getDisplayText(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
+                break;
+            }
 
             }
-            if(flag){
-                Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.048f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+        if(flag){
+                Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+        }
 
-            }
-            }
         gif.getFontRenderer().drawString(amereTimer(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize, 16777215, true);
 
 

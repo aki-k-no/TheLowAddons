@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S3BPacketScoreboardObjective;
@@ -19,11 +21,19 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.core.jmx.Server;
 import org.lwjgl.Sys;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AKITheLowUtil {
 
@@ -129,6 +139,38 @@ public class AKITheLowUtil {
         }else{
             return "§8[-] ";
         }
+    }
+
+    public static boolean isSpecialName(String mcid){
+        if(mcid.equalsIgnoreCase("nyakonyan") || mcid.equalsIgnoreCase("Namiken") || mcid.equalsIgnoreCase("suitaso") || mcid.equalsIgnoreCase("ebikirara")){
+            return true;
+        }else if(mcid.equalsIgnoreCase("K_no")){
+            return true;
+        }else if(mcid.equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getName())){
+            return true;
+        }
+        return false;
+    }
+
+    public static String addSpecialReincTag(String mcid,int reinc){
+        if(mcid.equalsIgnoreCase("nyakonyan") || mcid.equalsIgnoreCase("Namiken")){
+            return "§4[ADMIN] ";
+        }else if(mcid.equalsIgnoreCase("suitaso") || mcid.equalsIgnoreCase("ebikirara")){
+            return "§3[MODERATOR] ";
+        }else if(mcid.equalsIgnoreCase("K_no") && reinc>=0){
+            if(ModCoreData.specialTag==null || !Minecraft.getMinecraft().thePlayer.getName().equalsIgnoreCase("K_no")){
+                return "§6[AUTHOR]§r ";
+            }else{
+                return ModCoreData.specialTag+"§r ";
+            }
+        }else if(mcid.equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getName())){
+            if(ModCoreData.specialTag==null){
+                return addReincTag(reinc);
+            }else{
+                return ModCoreData.specialTag+"§r ";
+            }
+        }
+        return addReincTag(reinc);
     }
 
     //GUIの幅高さを推測
@@ -261,19 +303,21 @@ public class AKITheLowUtil {
 
     public static void description(){
         showInChat("§b=================================================");
-        showInChat("§b現在のバージョン: AKI's TheLow Addons v1.4.1");
+        showInChat("§b現在のバージョン: AKI's TheLow Addons v1.4.2");
         showInChat("§a==使用可能コマンド==");
         showInChat("§7/ghi 現在のアイテムの詳しい情報を取得");
         showInChat("§7/cit 現在のアイテムに対応するCITテクスチャのpropertiesファイルの内容をコピー");
         showInChat("§7/preset ダンジョンプリセット機能(ダンジョンごとに持っていくアイテムを保存していつでも確認可能)");
         showInChat("§7/ehp 自分の有効体力を表示するコマンド");
         showInChat("§7/armor 自分の防具の防具スコアを表示するコマンド");
+        showInChat("§7/refresh タブやタイマーがバグったときに修正するコマンド");
         showInChat("§a==主機能==");
         showInChat("§7CTタイマー、アムルタイマー、開放予兆マーカー");
         showInChat("§7手に持ってる武器の情報表示機能");
         showInChat("§7タブに転生数を表示");
         showInChat("§7防具の耐久アラート");
         showInChat("§7NoThrowマーカー、NoThrowショートカット(デフォルトはNキー)");
+        showInChat("§7泉のCT表示機能、他人の泉のCTが上がったかどうか確認する機能");
         showInChat("§b=================================================");
         ModCoreData.isFirstLogin=false;
     }
@@ -290,4 +334,77 @@ public class AKITheLowUtil {
         return null;
 
     }
+
+    public static void copyToClipboard(String select) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit()
+                .getSystemClipboard();
+        StringSelection selection = new StringSelection(select);
+        clipboard.setContents(selection, selection);
+    }
+
+    public static boolean checkRegix(String str,String regix){
+        if(str==null && regix==null){
+            return true;
+        }else if(str==null || regix==null){
+            return false;
+        }
+        Pattern pattern=Pattern.compile(regix);
+        Matcher matcher=pattern.matcher(str);
+        return matcher.find();
+    }
+
+    public static String loadFile(String fileLocation){
+        FileInputStream stream=null;
+        String streamToString=null;
+        try{
+            stream = new FileInputStream(fileLocation);
+            InputStreamReader inputStreamReader = new InputStreamReader(stream);
+            Stream<String> streamOfString= new BufferedReader(inputStreamReader).lines();
+            streamToString= streamOfString.collect(Collectors.joining());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                stream.close();
+            }catch(Exception e){
+                e.printStackTrace();
+
+            }
+        }
+        return streamToString;
+    }
+
+    public static void saveFile(String text,String fileLocation){
+        FileOutputStream stream=null;
+
+        try{
+            stream=new FileOutputStream(fileLocation,false);
+            stream.write(text.getBytes());
+        }catch(Exception e){
+
+        }finally{
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    public static EntityPlayer getEntityPlayerByName(String name){
+        List<Entity> list=Minecraft.getMinecraft().theWorld.getLoadedEntityList();
+        for(Entity e:list){
+            if(e instanceof EntityPlayer){
+                EntityPlayer player=(EntityPlayer) e;
+                if(player.getName().equalsIgnoreCase(name)){
+                    return player;
+                }
+            }
+        }
+        return null;
+    }
+
 }

@@ -16,12 +16,8 @@ public class ImpactionTimer extends AbstractTimer{
 
     @Override
     public boolean shouldBeShown() {
-        if(HoldingItem.holdingItems==null) return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)==null )return false;
-        if(AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).startsWith("jok-sword")){
-            if(AKITheLowUtil.calcTimeDifference(ModCoreData.ImpactionEndTime,LocalDateTime.now())>=0){
-                return true;
-            }
+        if(AKITheLowUtil.calcTimeDifference(ModCoreData.ImpactionEndTime,LocalDateTime.now())>=0){
+            return true;
         }
         return false;
 
