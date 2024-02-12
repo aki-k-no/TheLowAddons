@@ -51,6 +51,7 @@ public class ModCoreData {
     public static LocalDateTime ImpactionEndTime=LocalDateTime.now();
     public static LocalDateTime TenkaEndTime=LocalDateTime.now();
     public static LocalDateTime BSKEndTime=LocalDateTime.now();
+    public static LocalDateTime HyakkaEndTime=LocalDateTime.now();
     public static LocalDateTime SeikishinEndTime=LocalDateTime.now();
 
     public static LocalDateTime RoAHandTime=LocalDateTime.now();

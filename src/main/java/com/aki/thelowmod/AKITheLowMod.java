@@ -29,7 +29,7 @@ public class AKITheLowMod
     public static final String MODID = "akithelowmod";
     public static final String MODNAME = "AKI's The Low Addons";
 
-    public static final String VERSION = "1.4.2";
+    public static final String VERSION = "1.5.0";
 
     public static Gson gson=new GsonBuilder().create();;
     @Metadata(MODID)

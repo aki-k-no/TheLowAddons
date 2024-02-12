@@ -1,5 +1,6 @@
 package com.aki.thelowmod.holding;
 
+import com.aki.thelowmod.api.AKITheLowUtil;
 import com.aki.thelowmod.data.ModCoreData;
 import net.minecraft.item.ItemStack;
 
@@ -19,7 +20,7 @@ public class AmeretatChecker {
                 wasHoldingAmeretat = false;
                 return;
             }
-            if (nowHolding.getDisplayName().startsWith("§4§lAmərətāt")) {
+            if (nowHolding.getDisplayName().startsWith("§4§lAmərətāt")  || ((AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems))!=null && (AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)).equals("craft50weapon"))) {
                 if (!wasHoldingAmeretat) {
                     ModCoreData.lastAmeretat = LocalDateTime.now();
                 }

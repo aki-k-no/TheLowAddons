@@ -29,6 +29,8 @@ public class DataStorage {
 
     public static boolean showNoThrow=true;
 
+    public static boolean showMagicStoneOverlay=true;
+
     public static boolean calculatePotionEffectGUI=true;
 
     public static boolean playAmereSound=true;
@@ -36,5 +38,13 @@ public class DataStorage {
     public static boolean showAmereTimer=true;
 
     public static float amereSoundVolume=1f;
+
+    public static float renderDPSX=1f;
+
+    public static float renderDPSY=0f;
+
+    public static float renderDPSSize=1f;
+
+    public static boolean shouldRenderDPS=true;
 
 }

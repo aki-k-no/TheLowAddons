@@ -18,6 +18,8 @@ public class AKITheLowModConfigCore {
 
     public static final String UTIL="Util";
 
+    public static final String DPS="DPS";
+
     public static List<IConfigElement> configElements=null;
 
     public static void setConfigElements(){
@@ -26,6 +28,7 @@ public class AKITheLowModConfigCore {
         configElements.addAll((new ConfigElement(AKITheLowModConfigCore.cfg.getCategory(AKITheLowModConfigCore.CT))).getChildElements());
         configElements.addAll((new ConfigElement(AKITheLowModConfigCore.cfg.getCategory(AKITheLowModConfigCore.ARMOR))).getChildElements());
         configElements.addAll((new ConfigElement(AKITheLowModConfigCore.cfg.getCategory(AKITheLowModConfigCore.UTIL))).getChildElements());
+        configElements.addAll((new ConfigElement(AKITheLowModConfigCore.cfg.getCategory(AKITheLowModConfigCore.DPS))).getChildElements());
     }
     public static void loadConfig(FMLPreInitializationEvent event) {
         // net.minecraftforge.common.config.Configurationのインスタンスを生成する。
@@ -50,6 +53,8 @@ public class AKITheLowModConfigCore {
         cfg.setCategoryLanguageKey(ARMOR,"config.akithelow.armor");
         cfg.addCustomCategoryComment(UTIL,"アムルタイマーなど便利機能の設定");
         cfg.setCategoryLanguageKey(UTIL,"config.akithelow.util");
+        cfg.addCustomCategoryComment(DPS,"DPS表示設定");
+        cfg.setCategoryLanguageKey(DPS,"config.akithelow.dps");
 
 
     }
@@ -77,9 +82,14 @@ public class AKITheLowModConfigCore {
         DataStorage.utilityCTY=cfg.getFloat("UtilityCTY",UTIL,DataStorage.utilityCTY,0f,10f,"アムルタイマーなどの表示座標Y","config.akithelow.util.utilityY");
         DataStorage.utilityCTSize=cfg.getFloat("UtilityCTSize",UTIL,DataStorage.utilityCTSize,0f,10f,"アムルタイマーなどの表示サイズ","config.akithelow.util.utilitySize");
         DataStorage.showNoThrow=cfg.getBoolean("ToggleNoThrow",UTIL,DataStorage.showNoThrow,"NoThrowアイコン表示非表示切り替え","config.akithelow.util.toggleNothrow");
+        DataStorage.showMagicStoneOverlay=cfg.getBoolean("ToggleMagicalStoneOverlay",UTIL,DataStorage.showMagicStoneOverlay,"魔法石オーバーレイ表示非表示切り替え","config.akithelow.util.toggleNothrow");
         DataStorage.playAmereSound=cfg.getBoolean("ToggleAmereSound",UTIL,DataStorage.playAmereSound,"アムルタイマーの音のオンオフ","config.akithelow.util.toggleAmereSound");
         DataStorage.amereSoundVolume=cfg.getFloat("amereSoundVolume",UTIL,DataStorage.amereSoundVolume,0f,2f,"アムルタイマーの音量","config.akithelow.util.amereSoundVolume");
         DataStorage.showAmereTimer=cfg.getBoolean("ShowAmereTimer",UTIL,DataStorage.showAmereTimer,"アムルタイマー表示オンオフ(これ以外にUtilityTimerを表示する設定をONにしてください)","config.akithelow.util.showAmereTimer");
+        DataStorage.renderDPSX=cfg.getFloat("DPSRenderX",DPS, DataStorage.renderDPSX,0f,10f,"DPSの表示場所X座標を決定します","config.akithelow.dps.renderX");
+        DataStorage.renderDPSY=cfg.getFloat("DPSRenderY",DPS, DataStorage.renderDPSY,0f,10f,"DPSの表示場所Y座標を決定します","config.akithelow.dps.renderY");
+        DataStorage.renderDPSSize=cfg.getFloat("DPSRenderSize",DPS, DataStorage.renderDPSSize,0f,10f,"DPSの表示サイズを決定します","config.akithelow.dps.renderSize");
+        DataStorage.shouldRenderDPS=cfg.getBoolean("shouldRenderDPS",DPS, DataStorage.shouldRenderDPS,"DPSを表示するかを決定します","config.akithelow.dps.shouldRenderDPS");
 
 
         // 設定内容をコンフィグファイルに保存する。

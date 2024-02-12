@@ -9,12 +9,16 @@ import com.aki.thelowmod.chat.ChatReceiver;
 import com.aki.thelowmod.commands.GetGUIItemNBTDataCommand;
 import com.aki.thelowmod.config.AKITheLowModConfigCore;
 import com.aki.thelowmod.config.DataStorage;
+import com.aki.thelowmod.damageviewer.DamageCalc;
 import com.aki.thelowmod.data.ModCoreData;
+import com.aki.thelowmod.gui.OverlayRender;
 import com.aki.thelowmod.holding.AmeretatChecker;
 import com.aki.thelowmod.holding.HoldingItem;
 import com.aki.thelowmod.holding.RoAChecker;
+import javafx.scene.input.MouseDragEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -26,10 +30,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -108,6 +109,7 @@ public class Events {
             }
         }
 
+        DamageCalc.calcBossDamage();
 //        if(nowHealth!=Minecraft.getMinecraft().thePlayer.getHealth()){
 //            AKITheLowUtil.showInChat(nowHealth-Minecraft.getMinecraft().thePlayer.getHealth());
 //        }
@@ -124,19 +126,7 @@ public class Events {
             AKITheLowModConfigCore.syncConfig();
     }
 
-    @SubscribeEvent
-    public void everyWorldTick(TickEvent.ClientTickEvent event){
 
-    }
-
-    @SubscribeEvent
-    public void whenJoined(EntityJoinWorldEvent event){
-        if(event.entity instanceof EntityPlayer){
-
-        }
-
-
-    }
 
 
 
@@ -164,31 +154,39 @@ public class Events {
             e.setCanceled(true);
             AKITheLowUtil.showInChat("手に持っているアイテムは現在§a捨てられません");
         }else if(AKITheLowUtil.checkRegix(e.message.getUnformattedText(),"\\[武器スキル\\].[0-9A-Za-z_]*が恵みの泉を発動")){
-            String mcid=e.message.getUnformattedText().split(" ")[1].split("が")[0];
+            if(e.message.getUnformattedText().split(" ").length==2){
+                String mcid=e.message.getUnformattedText().split(" ")[1].split("が")[0];
 
-            try {
-                if (ModCoreData.springTimer.containsKey(mcid)) {
-                    ModCoreData.springTimer.remove(mcid);
+                try {
+                    if (ModCoreData.springTimer.containsKey(mcid)) {
+                        ModCoreData.springTimer.remove(mcid);
+                    }
+                    if (ModCoreData.springLocation.containsKey(mcid)) {
+                        ModCoreData.springLocation.remove(mcid);
+                    }
+                }catch(Exception ex){
+                    ex.printStackTrace();
                 }
-                if (ModCoreData.springLocation.containsKey(mcid)) {
-                    ModCoreData.springLocation.remove(mcid);
-                }
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
-            ModCoreData.springTimer.put(mcid,LocalDateTime.now().plusSeconds(51).plusNanos(300000000));
-            try {
-                EntityPlayer ep=AKITheLowUtil.getEntityPlayerByName(mcid);
-                if(ep!=null){
-                    ep.onUpdate();
-                    ModCoreData.springLocation.put(mcid,new Coordinates(ep.posX,ep.posY,ep.posZ));
+                ModCoreData.springTimer.put(mcid,LocalDateTime.now().plusSeconds(51).plusNanos(300000000));
+                try {
+                    EntityPlayer ep=AKITheLowUtil.getEntityPlayerByName(mcid);
+                    if(ep!=null){
+                        ep.onUpdate();
+                        ModCoreData.springLocation.put(mcid,new Coordinates(ep.posX,ep.posY,ep.posZ));
 
+                    }
+                }catch(Exception ex){
+                    ex.printStackTrace();
                 }
-            }catch(Exception ex){
-                ex.printStackTrace();
             }
+
         }
 
+    }
+
+    @SubscribeEvent
+    public void textureReloadEvent(TextureStitchEvent.Post e){
+        OverlayRender.readOverlayData();;
     }
 
     private static void NoThrowOK(){
@@ -203,7 +201,7 @@ public class Events {
             }if(HoldingItem.holdingItems.getDisplayName()==null){
                 return;
             }
-            if(HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") && !(e.target instanceof EntityPlayer)){
+            if((HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") || (AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)!=null && AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems).equals("craft50weapon"))) && !(e.target instanceof EntityPlayer)){
                 ModCoreData.lastAmeretat=LocalDateTime.now();
             }
         }

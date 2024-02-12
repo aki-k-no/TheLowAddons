@@ -32,11 +32,11 @@ public class CTRender {
         timers.add(new BSKTimer());
         timers.add(new RoATimer());
         timers.add(new SeikishinTimer());
+        timers.add(new HyakkaTimer());
     }
 
     public static void showCT(GuiIngameForge gif, ScaledResolution sclRes){
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.8F, 0.8F, 0.0F);
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 
@@ -50,11 +50,9 @@ public class CTRender {
     public static void renderStrings(GuiIngameForge gif, ScaledResolution sclRes){
         Set<String> keys= ModCoreData.cts.keySet();
         int i=0;
+        GlStateManager.scale(DataStorage.renderCTSize,DataStorage.renderCTSize,DataStorage.renderCTSize);
         for(String key:keys){
-            GlStateManager.pushMatrix();
-            GlStateManager.scale(DataStorage.renderCTSize,DataStorage.renderCTSize,DataStorage.renderCTSize);
-            gif.getFontRenderer().drawString(key+" "+timer(key), sclRes.getScaledWidth()*DataStorage.renderCTX/DataStorage.renderCTSize, sclRes.getScaledHeight()*(DataStorage.renderCTY+determineY(key)*0.03f)/DataStorage.renderCTSize, 16777215, true);
-            GlStateManager.popMatrix();
+            gif.getFontRenderer().drawString(key+" "+timer(key), sclRes.getScaledWidth()*DataStorage.renderCTX/DataStorage.renderCTSize, (sclRes.getScaledHeight()*DataStorage.renderCTY)/DataStorage.renderCTSize+determineY(key)*8, 16777215, true);
             i++;
         }
     }
@@ -88,7 +86,7 @@ public class CTRender {
         if(HoldingItem.holdingItems==null){
             return "";
         }
-        if(! HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt")){
+        if(! (HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") || ((AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems))!=null && (AKITheLowUtil.getTheLowItemID(HoldingItem.holdingItems)).equals("craft50weapon")))){
             return "";
         }
         if(diff[0]>=6){
@@ -102,52 +100,47 @@ public class CTRender {
     }
     public static void showUtilityTimer(GuiIngameForge gif, ScaledResolution sclRes){
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.8F, 0.8F, 0.0F);
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(DataStorage.utilityCTSize,DataStorage.utilityCTSize,DataStorage.utilityCTSize);
+        GlStateManager.scale(DataStorage.utilityCTSize,DataStorage.utilityCTSize,1);
+        GlStateManager.translate(sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize,sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize,0);
+
         if(HoldingItem.holdingItems!=null && HoldingItem.holdingItems.getDisplayName()!=null && HoldingItem.holdingItems.getDisplayName().startsWith("§4§lAmərətāt") && DataStorage.showAmereTimer){
-            Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+            Gui.drawRect(0 ,0,  80, 10,0x3Fb1ebff);
 
         }
         boolean flag=true;
         for(AbstractTimer timer:timers){
             if(timer.shouldBeShown()){
                 flag=false;
-                Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.2f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
-                gif.getFontRenderer().drawString(timer.getDisplayText(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
+                Gui.drawRect(0, 10, 80,42,0x3Fb1ebff);
+                gif.getFontRenderer().drawString(timer.getDisplayText(), 1, 31, 16777215, true);
                 break;
             }
 
             }
         if(flag){
-                Gui.drawRect((int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX-0.002f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledWidth()*(DataStorage.utilityCTX+0.18f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize), (int) (sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.15f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize),0x3Fb1ebff);
+            Gui.drawRect(0, 10,  80, 32,0x3Fb1ebff);
         }
 
-        gif.getFontRenderer().drawString(amereTimer(), sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY)/DataStorage.utilityCTSize, 16777215, true);
-
+        gif.getFontRenderer().drawString(amereTimer(), 1, 1, 16777215, true);
 
         showYK(gif,sclRes);
-
         GlStateManager.popMatrix();
-
         GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
         GlStateManager.disableAlpha();
     }
     public static void showYK(GuiIngameForge gif, ScaledResolution sclRes){
-
         if(ModCoreData.isAlreadyYochou){
-            gif.getFontRenderer().drawString("予兆§2済", sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("予兆§2済", 1, 11,16777215, true);
         }else{
-            gif.getFontRenderer().drawString("予兆§4未", sclRes.getScaledWidth()*(DataStorage.utilityCTX)/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.05f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("予兆§4未", 1, 11, 16777215, true);
         }
         if(ModCoreData.isAlreadyKaihou){
-            gif.getFontRenderer().drawString("開放§2済", sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.1f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("開放§2済",  1, 21, 16777215, true);
         }else{
-            gif.getFontRenderer().drawString("開放§4未", sclRes.getScaledWidth()*DataStorage.utilityCTX/DataStorage.utilityCTSize, sclRes.getScaledHeight()*(DataStorage.utilityCTY+0.1f*DataStorage.utilityCTSize)/DataStorage.utilityCTSize, 16777215, true);
+            gif.getFontRenderer().drawString("開放§4未", 1, 21, 16777215, true);
         }
 
     }

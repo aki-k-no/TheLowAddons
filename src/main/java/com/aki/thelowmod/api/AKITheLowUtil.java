@@ -2,13 +2,16 @@ package com.aki.thelowmod.api;
 
 import com.aki.thelowmod.AKITheLowMod;
 import com.aki.thelowmod.config.DataStorage;
+import com.aki.thelowmod.damageviewer.DamageCalc;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.types.DungeonData;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -18,6 +21,7 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.apache.logging.log4j.core.jmx.Server;
 import org.lwjgl.Sys;
 
@@ -408,4 +412,58 @@ public class AKITheLowUtil {
         return null;
     }
 
+    public static String getCurrentTitle(){
+        try {
+            Field f=getFieldFromClass(GuiIngame.class,"field_175201_x");
+            f.setAccessible(true);
+            return (String) f.get(Minecraft.getMinecraft().ingameGUI);
+        } catch (Exception e) {}
+        return "";
+    }
+    public static String getCurrentSubTitle(){
+        try {
+            Field f=getFieldFromClass(GuiIngame.class,"field_175200_y");
+            f.setAccessible(true);
+            return (String) f.get(Minecraft.getMinecraft().ingameGUI);
+        } catch (Exception e) {}
+        return "";
+    }
+    public static String getCurrentActionBar(){
+        try {
+            Field f=getFieldFromClass(GuiIngame.class,"field_73838_g");
+            f.setAccessible(true);
+            return (String) f.get(Minecraft.getMinecraft().ingameGUI);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    public static void getAllFields(Class clazz){
+        Field[] fields=clazz.getDeclaredFields();
+        for(Field f:fields){
+            System.out.println(f.getName()+" "+f.getType());
+        }
+    }
+
+    public static EntityLivingBase getEntityFromBossName(String bossName){
+        if(DamageCalc.currentBoss!=null && bossName.equals(DamageCalc.currentBoss.getDisplayName().getUnformattedText().split("§c 【")[0])){
+            return DamageCalc.currentBoss;
+        }
+        List<Entity> list=Minecraft.getMinecraft().theWorld.getLoadedEntityList();
+        for(Entity e:list){
+            if(e instanceof EntityLivingBase){
+                if(e.getDisplayName().getUnformattedText().split("§c 【").length!=2)continue;
+                if(e.getDisplayName().getUnformattedText().split("§c 【")[0].equalsIgnoreCase(bossName)){
+                    return (EntityLivingBase) e;
+                }
+            }
+
+        }
+
+        return null;
+    }
+
+    public static double round_off(double value,int digit){
+        return (Math.round(value*Math.pow(10,digit))/Math.pow(10,digit));
+    }
 }

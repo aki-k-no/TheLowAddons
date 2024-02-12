@@ -3,6 +3,8 @@ package com.aki.thelowmod.gui;
 import com.aki.thelowmod.ClientProxy;
 import com.aki.thelowmod.api.AKITheLowUtil;
 import com.aki.thelowmod.config.DataStorage;
+import com.aki.thelowmod.damageviewer.DamageCalc;
+import com.aki.thelowmod.damageviewer.DamageData;
 import com.aki.thelowmod.data.ModCoreData;
 import com.aki.thelowmod.holding.HoldingItem;
 import net.minecraft.client.Minecraft;
@@ -47,6 +49,7 @@ public class AkiRender extends GuiIngameForge {
 
     @SubscribeEvent
     public void render(RenderGameOverlayEvent.Text event){
+        sclRes = new ScaledResolution(mc);
         try {
 
 
@@ -60,6 +63,11 @@ public class AkiRender extends GuiIngameForge {
                 CTRender.showUtilityTimer(this, sclRes);
             }
 
+            //DPS表示機能
+            if(DataStorage.shouldRenderDPS){
+                DamageCalc.RenderDPS(this,sclRes);
+            }
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -69,52 +77,61 @@ public class AkiRender extends GuiIngameForge {
     @SubscribeEvent
     public void renderGUI(GuiScreenEvent.DrawScreenEvent.Pre e){
 
-        if(DataStorage.showNoThrow){
-            OverlayRender.renderOverlay(this,sclRes);
-        }
+        OverlayRender.renderOverlay(this,sclRes);
 
+    }
+
+    @SubscribeEvent
+    public void renderHotBarOverlay(RenderGameOverlayEvent e){
+        if(DataStorage.showMagicStoneOverlay && e.type==RenderGameOverlayEvent.ElementType.HOTBAR){
+            OverlayRender.MagicalStoneOverlayHotbar(this,sclRes);
+        }
     }
 
     private void renderHoldingItem(){
         int line=2;
+        float renderScale=0.6F*DataStorage.renderSize;
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.8F, 0.8F, 0.0F);
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(0.6F*DataStorage.renderSize, 0.6F*DataStorage.renderSize, 0.6F*DataStorage.renderSize);
-                                                                        this.getFontRenderer().drawString(HoldingItem.holdingItems.getDisplayName(), sclRes.getScaledWidth()* DataStorage.renderHoldingItemX*1.66F/DataStorage.renderSize, sclRes.getScaledHeight()* DataStorage.renderHoldingItemY*1.66F/DataStorage.renderSize, 16777215, true);
-        GlStateManager.popMatrix();
+        GlStateManager.scale(renderScale, renderScale, 1);
+        GlStateManager.translate(sclRes.getScaledWidth()* DataStorage.renderHoldingItemX/renderScale, sclRes.getScaledHeight()* DataStorage.renderHoldingItemY/renderScale,0);
+        this.getFontRenderer().drawString(HoldingItem.holdingItems.getDisplayName(), 0,0, 16777215, true);
 
-        GlStateManager.scale(0.5F*DataStorage.renderSize, 0.5F*DataStorage.renderSize, 0.5F*DataStorage.renderSize);
 
         HoldingItem.analyzeItemLore();
 
         Double weaponStrength=HoldingItem.getWeaponStrength();
+        GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
+        GlStateManager.scale(0.6F*DataStorage.renderSize, 0.6F*DataStorage.renderSize, 0.6F*DataStorage.renderSize);
+        GlStateManager.translate((sclRes.getScaledWidth()* DataStorage.renderHoldingItemX+10)/renderScale, (sclRes.getScaledHeight()* DataStorage.renderHoldingItemY)/renderScale,0);
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+
         if(weaponStrength!=null) {
-            this.getFontRenderer().drawString("§e§l攻撃力", sclRes.getScaledWidth() * DataStorage.renderHoldingItemX * 2/DataStorage.renderSize, (float) (sclRes.getScaledHeight() * (DataStorage.renderHoldingItemY + DataStorage.renderDistance * line*DataStorage.renderSize) * 2)/DataStorage.renderSize, 16777215, true);
+            this.getFontRenderer().drawString("§e§l攻撃力", 0, 5*line*DataStorage.renderSize/renderScale, 16777215, true);
             line++;
-            this.getFontRenderer().drawString("§6    +"+weaponStrength.toString(), sclRes.getScaledWidth() * DataStorage.renderHoldingItemX * 2/DataStorage.renderSize, (float) (sclRes.getScaledHeight() * (DataStorage.renderHoldingItemY + DataStorage.renderDistance * line*DataStorage.renderSize) * 2)/DataStorage.renderSize, 16777215, true);
+            this.getFontRenderer().drawString("§6    +"+weaponStrength.toString(), 0, 5*line*DataStorage.renderSize/renderScale, 16777215, true);
             line++;
         }
-        GlStateManager.popMatrix();
 
         Map<String,Double> additinalStr=HoldingItem.getAdditionalStrength();
-        GlStateManager.pushMatrix();
         if(additinalStr!=null && additinalStr.size()!=0) {
-            this.getFontRenderer().drawString("§e§l追加ダメージ", sclRes.getScaledWidth() * DataStorage.renderHoldingItemX * 2/DataStorage.renderSize, (float) (sclRes.getScaledHeight() * (DataStorage.renderHoldingItemY + DataStorage.renderDistance * line*DataStorage.renderSize) * 2)/DataStorage.renderSize, 16777215, true);
+            this.getFontRenderer().drawString("§e§l追加ダメージ", 0, 5*line*DataStorage.renderSize/renderScale, 16777215, true);
             line++;
             for(String nameKey: additinalStr.keySet()){
-                GlStateManager.pushMatrix();
-                this.getFontRenderer().drawString(nameKey+" ： §6+"+additinalStr.get(nameKey), sclRes.getScaledWidth()* DataStorage.renderHoldingItemX*2/DataStorage.renderSize, (float) (sclRes.getScaledHeight() * (DataStorage.renderHoldingItemY+DataStorage.renderDistance*line*DataStorage.renderSize)*2)/DataStorage.renderSize, 16777215, true);
+                this.getFontRenderer().drawString(nameKey+" ： §6+"+additinalStr.get(nameKey), 0, 5*line*DataStorage.renderSize/renderScale, 16777215, true);
                 line++;
-                GlStateManager.popMatrix();
             }
 
         }
+
         GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.6F*DataStorage.renderSize, 0.6F*DataStorage.renderSize, 0.6F*DataStorage.renderSize);
+        GlStateManager.translate((sclRes.getScaledWidth()* DataStorage.renderHoldingItemX+10)/renderScale,  (sclRes.getScaledHeight() * DataStorage.renderHoldingItemY)/renderScale,0);
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 
         List<String> slot=HoldingItem.getSlotsInfo();
         if(slot!=null) {
@@ -122,10 +139,8 @@ public class AkiRender extends GuiIngameForge {
                 slot.add(0, "§2§lSLOT情報");
             }
             for (int i = 0; i < slot.size(); i++) {
-                GlStateManager.pushMatrix();
-                this.getFontRenderer().drawString(slot.get(i), sclRes.getScaledWidth() * DataStorage.renderHoldingItemX * 2/DataStorage.renderSize, (float) (sclRes.getScaledHeight() * (DataStorage.renderHoldingItemY + DataStorage.renderDistance * line*DataStorage.renderSize) * 2)/DataStorage.renderSize, 16777215, true);
+                this.getFontRenderer().drawString(slot.get(i), 0, 5*line*DataStorage.renderSize/renderScale,  16777215, true);
                 line++;
-                GlStateManager.popMatrix();
             }
             try{
                 if (slot.size() > 0) {
@@ -136,11 +151,17 @@ public class AkiRender extends GuiIngameForge {
                     mahouseki[3]="§3キャスター ×";
                     mahouseki[4]="§dポーシング +";
                     Double[] eneMul=HoldingItem.getMultiple();
-                    for(int i=0;i<5;i++){
-                        GlStateManager.pushMatrix();
-                        this.getFontRenderer().drawString(mahouseki[i]+(Math.round(eneMul[i]*1000.0)/1000.0+"     ").subSequence(0,4).toString(), ((float) sclRes.getScaledWidth()* (DataStorage.renderHoldingItemX+0.15F*DataStorage.renderSize)*2)/DataStorage.renderSize, (float) (sclRes.getScaledHeight() * (DataStorage.renderHoldingItemY+DataStorage.renderDistance*DataStorage.renderSize*(i+2))*2)/DataStorage.renderSize, 16777215, true);
+                    GlStateManager.popMatrix();
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(renderScale, renderScale, 1);
+                    GlStateManager.translate((sclRes.getScaledWidth()* DataStorage.renderHoldingItemX)/(renderScale)+130,  (sclRes.getScaledHeight() * DataStorage.renderHoldingItemY)/(renderScale)+6,0);
 
-                        GlStateManager.popMatrix();
+                    GlStateManager.scale(0.8f, 0.8f, 1);
+
+
+                    for(int i=0;i<5;i++){
+                        this.getFontRenderer().drawString(mahouseki[i]+(Math.round(eneMul[i]*1000.0)/1000.0+"     ").subSequence(0,4).toString(), 0, 4*i*DataStorage.renderSize/(0.8f*renderScale), 16777215, true);
+
                     }
                 }
             }catch(Exception e){
@@ -150,10 +171,10 @@ public class AkiRender extends GuiIngameForge {
 
         }
 
+        GlStateManager.popMatrix();
 
 
         GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
         GlStateManager.disableAlpha();
     }
 
@@ -178,14 +199,13 @@ public class AkiRender extends GuiIngameForge {
                 str=str+"足";
             }
             str=str+"の耐久がピンチ！";
-            GlStateManager.pushMatrix();
             GlStateManager.scale(DataStorage.alertArmorSize,DataStorage.alertArmorSize,DataStorage.alertArmorSize);
             this.getFontRenderer().drawString(str,sclRes.getScaledWidth()*DataStorage.alertArmorDamageX/DataStorage.alertArmorSize,sclRes.getScaledHeight()*DataStorage.alertArmorDamageY/DataStorage.alertArmorSize,16711680,true);
             GlStateManager.popMatrix();
 
             GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
             GlStateManager.disableAlpha();
+            GlStateManager.popMatrix();
         }
     }
 
